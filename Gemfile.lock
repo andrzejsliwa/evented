@@ -1,0 +1,21 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    closure-compiler (1.0.0)
+    configuration (1.2.0)
+    jstdutil (0.3.5)
+      rake
+      watchr
+    launchy (0.3.7)
+      configuration (>= 0.0.5)
+      rake (>= 0.8.1)
+    rake (0.8.7)
+    watchr (0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  closure-compiler
+  jstdutil
+  launchy
