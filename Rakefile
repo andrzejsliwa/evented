@@ -1,9 +1,19 @@
 require 'rubygems'
 
-HEADER = /((^\s*\/\/.*\n)+)/
+HEADER = /^\(function\(\)\s*\{.*(\/\*.*\*\/)/m
 
 desc "rebuild the jquery.evented-min.js files for distribution"
 task :build do
+  begin
+    require 'coffee_script'
+  rescue LoadError
+    puts "coffee_script compiler not found.\nInstall it by running 'gem install coffee-script'"
+    exit
+  end
+  File.open('jquery.evented.js', 'w+') do |file|
+    file.write CoffeeScript.compile File.read "jquery.evented.coffee"
+  end
+
   begin
     require 'closure-compiler'
   rescue LoadError
@@ -13,7 +23,8 @@ task :build do
   source = File.read 'jquery.evented.js'
   header = source.match(HEADER)
   File.open('jquery.evented-min.js', 'w+') do |file|
-    file.write header[1].squeeze(' ') + Closure::Compiler.new.compress(source)
+    file.puts header[1].squeeze(' ')
+    file.write Closure::Compiler.new.compress(source)
   end
 end
 
