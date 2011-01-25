@@ -1,12 +1,14 @@
-beforeEach(function() {
-  this.addMatchers({
-    toBeFunction: function() { return typeof this.actual === 'function' }
+(function() {
+  beforeEach(function() {
+    return this.addMatchers({
+      toBeFunction: function() {
+        return typeof this.actual === 'function';
+      }
+    });
   });
-});
-
-describe("true", function() {
-  it("should be true", function(){
-    expect(true).toEqual(true);
+  describe("true", function() {
+    return it("should be true", function() {
+      return expect(true).toEqual(true);
+    });
   });
-});
-
+}).call(this);

@@ -1,16 +1,24 @@
 require 'rubygems'
 
-HEADER = /^\(function\(\)\s*\{.*(\/\*.*\*\/)/m
+task :default => ["spec:browser"]
 
 desc "rebuild the jquery.evented-min.js files for distribution"
 task :build do
+  print "source processing... "
   begin
     require 'coffee_script'
   rescue LoadError
     puts "coffee_script compiler not found.\nInstall it by running 'gem install coffee-script'"
     exit
   end
-  File.open('jquery.evented.js', 'w+') do |file|
+
+  Dir.glob('spec/*.coffee').each do |filepath|
+    File.open(filepath.gsub('.coffee', '.js'), 'w+') do |file|
+      file.write CoffeeScript.compile File.read filepath
+    end
+  end
+
+  File.open('jquery.evented.debug.js', 'w+') do |file|
     file.write CoffeeScript.compile File.read "jquery.evented.coffee"
   end
 
@@ -20,17 +28,19 @@ task :build do
     puts "closure-compiler not found.\nInstall it by running 'gem install closure-compiler'"
     exit
   end
-  source = File.read 'jquery.evented.js'
-  header = source.match(HEADER)
-  File.open('jquery.evented-min.js', 'w+') do |file|
+  source = File.read 'jquery.evented.debug.js'
+  header = source.match(/^\(function\(\)\s*\{.*(\/\*.*\*\/)/m)
+  File.open('jquery.evented.js', 'w+') do |file|
     file.puts header[1].squeeze(' ')
     file.write Closure::Compiler.new.compress(source)
   end
+  puts "done."
 end
 
 namespace :spec do
   desc "run specs for jquery.evented.js in browser"
-  task :browser do
+  task :browser => [:build] do
+    print "opening browser... "
     begin
       require 'launchy'
     rescue LoadError
@@ -38,28 +48,29 @@ namespace :spec do
       exit
     end
     Launchy::Browser.run("file://#{Dir.pwd}/spec/spec.html")
+    puts "done."
   end
 
   desc "run specs for jquery.evented.js in console - require run jtestdriver server (rake spec:server)"
-  task :console do
+  task :console => [:build] do
     check_jstdutil
     system "jstestdriver --tests all"
   end
 
   desc "run specs for jquery.evented.js in autotest mode - require run jtestdriver server (rake spec:server)"
-  task :autotest do
+  task :autotest => [:build] do
     check_jstdutil
     system "jsautotest"
   end
 
   desc "run jstestdriver server"
-  task :server do
+  task :server => [:build] do
     check_jstdutil
     system "jstestdriver --port 4224"
   end
 
   desc "connect browser to jstestdriver server"
-  task :connect do
+  task :connect  => [:build] do
     begin
       require 'launchy'
     rescue LoadError
@@ -71,13 +82,13 @@ namespace :spec do
 end
 
 desc "build the docco documentation"
-task :doc do
+task :doc => [:build] do
   check 'docco', 'docco', 'https://github.com/jashkenas/docco'
   system 'docco jquery.evented.js'
 end
 
 desc "run JavaScriptLint on the source"
-task :lint do
+task :lint => [:build] do
   system "jsl -nofilelisting -nologo -conf jsl.conf -process jquery.evented.js"
 end
 
@@ -91,3 +102,4 @@ def check(exec, name, url)
   puts "#{name} not found.\nInstall it from #{url}"
   exit
 end
+
