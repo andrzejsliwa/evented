@@ -16,9 +16,15 @@ Install required Gems for Building & Testing Process:
 
   bunlde install
 
-Building & Testing options:
+Building:
 
-  rake build          # rebuild the jquery.evented-min.js files for distribution
+  $ rake # build
+
+Available tasks:
+
+  $ rake -T
+  (in /Users/andrzejsliwa/jquery-evented)
+  rake build          # rebuild the jquery.evented.js file for distribution and specs files for testing
   rake doc            # build the docco documentation
   rake lint           # run JavaScriptLint on the source
   rake spec:autotest  # run specs for jquery.evented.js in autotest mode - require run jtestdriver server (rake spec:server)

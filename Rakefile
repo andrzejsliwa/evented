@@ -2,7 +2,7 @@ require 'rubygems'
 
 task :default => ["spec:browser"]
 
-desc "rebuild the jquery.evented-min.js files for distribution"
+desc "rebuild the jquery.evented.js file for distribution and specs files for testing"
 task :build do
   print "source processing... "
   begin
