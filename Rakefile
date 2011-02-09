@@ -2,7 +2,7 @@ require 'rubygems'
 
 task :default => ["spec:browser"]
 
-desc "rebuild the jquery.evented.js file for distribution and specs files for testing"
+desc "rebuild the evented.js file for distribution and specs files for testing"
 task :build do
   print "source processing... "
   begin
@@ -18,8 +18,8 @@ task :build do
     end
   end
 
-  File.open('jquery.evented.debug.js', 'w+') do |file|
-    file.write CoffeeScript.compile File.read "jquery.evented.coffee"
+  File.open('evented.debug.js', 'w+') do |file|
+    file.write CoffeeScript.compile File.read "evented.coffee"
   end
 
   begin
@@ -28,9 +28,9 @@ task :build do
     puts "closure-compiler not found.\nInstall it by running 'gem install closure-compiler'"
     exit
   end
-  source = File.read 'jquery.evented.debug.js'
+  source = File.read 'evented.debug.js'
   header = source.match(/^\(function\(\)\s*\{.*(\/\*.*\*\/)/m)
-  File.open('jquery.evented.js', 'w+') do |file|
+  File.open('evented.js', 'w+') do |file|
     file.puts header[1].squeeze(' ')
     file.write Closure::Compiler.new.compress(source)
   end
@@ -38,7 +38,7 @@ task :build do
 end
 
 namespace :spec do
-  desc "run specs for jquery.evented.js in browser"
+  desc "run specs for evented.js in browser"
   task :browser => [:build] do
     print "opening browser... "
     begin
@@ -51,13 +51,13 @@ namespace :spec do
     puts "done."
   end
 
-  desc "run specs for jquery.evented.js in console - require run jtestdriver server (rake spec:server)"
+  desc "run specs for evented.js in console - require run jtestdriver server (rake spec:server)"
   task :console => [:build] do
     check_jstdutil
     system "jstestdriver --tests all"
   end
 
-  desc "run specs for jquery.evented.js in autotest mode - require run jtestdriver server (rake spec:server)"
+  desc "run specs for evented.js in autotest mode - require run jtestdriver server (rake spec:server)"
   task :autotest => [:build] do
     check_jstdutil
     system "jsautotest"
@@ -84,12 +84,12 @@ end
 desc "build the docco documentation"
 task :doc => [:build] do
   check 'docco', 'docco', 'https://github.com/jashkenas/docco'
-  system 'docco jquery.evented.js'
+  system 'docco evented.js'
 end
 
 desc "run JavaScriptLint on the source"
 task :lint => [:build] do
-  system "jsl -nofilelisting -nologo -conf jsl.conf -process jquery.evented.js"
+  system "jsl -nofilelisting -nologo -conf jsl.conf -process evented.js"
 end
 
 def check_jstdutil

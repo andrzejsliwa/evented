@@ -1,16 +1,16 @@
-   _____ _____                            _______                               _
-  (_____) ___ \                          (_______)                _            | |
-     _ | |   | |_   _  ____  ____ _   _   _____  _   _ ____ ____ | |_   ____ _ | |
-    | || |   |_| | | |/ _  )/ ___) | | | |  ___)| | | / _  )  _ \|  _) / _  ) || |
- ___| | \ \____| |_| ( (/ /| |   | |_| |_| |_____\ V ( (/ /| | | | |__( (/ ( (_| |
-(____/   \_____)\____|\____)_|    \__  (_)_______)\_/ \____)_| |_|\___)\____)____|
-                                 (____/
+ _______                               _
+(_______)                _            | |
+ _____  _   _ ____ ____ | |_   ____ _ | |
+|  ___)| | | / _  )  _ \|  _) / _  ) || |
+| |_____\ V ( (/ /| | | | |__( (/ ( (_| |
+|_______)\_/ \____)_| |_|\___)\____)____|
+                           
 
 May be freely distributed under the MIT license.
 
 To suggest a feature, report a bug, or general discussion:
 
-  http://github.com/andrzejsliwa/jquery-evented/issues/
+  http://github.com/andrzejsliwa/evented/issues/
 
 Install required Gems for Building & Testing Process:
 
@@ -23,12 +23,12 @@ Building:
 Available tasks:
 
   $ rake -T
-  (in /Users/andrzejsliwa/jquery-evented)
-  rake build          # rebuild the jquery.evented.js file for distribution and specs files for testing
+  (in /Users/andrzejsliwa/evented)
+  rake build          # rebuild the evented.js file for distribution and specs files for testing
   rake doc            # build the docco documentation
   rake lint           # run JavaScriptLint on the source
-  rake spec:autotest  # run specs for jquery.evented.js in autotest mode - require run jtestdriver server (rake spec:server)
-  rake spec:browser   # run specs for jquery.evented.js in browser
+  rake spec:autotest  # run specs for evented.js in autotest mode - require run jtestdriver server (rake spec:server)
+  rake spec:browser   # run specs for evented.js in browser
   rake spec:connect   # connect browser to jstestdriver server
-  rake spec:console   # run specs for jquery.evented.js in console - require run jtestdriver server (rake spec:server)
+  rake spec:console   # run specs for evented.js in console - require run jtestdriver server (rake spec:server)
   rake spec:server    # run jstestdriver server
